@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stop&Glow Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_outward">
+</head>
+
+<body>
+    <div id="three-container"></div>
+
+    <header>
+        <nav class="nav">
+            <a href="#" class="nav-icon icon-info" data-tooltip="Как подать"></a>
+            <a href="#" class="nav-icon icon-contact" data-tooltip="Контакты"></a>
+            <button class="nav-button" data-tooltip="Подать заявку">Exhibit</button>
+        </nav>
+    </header>
+
+    <main class="overlay-ui">
+        <h1 class="heading">Stop&Glow Gallery</h1>
+        <p class="text-block-1">Галлерея выросла из проекта артовой лампы светотерапии [<a href="https://example.com"><span class="material-symbols-outlined">arrow_outward</span></a>]. В концепции бренда заложена идея коллабораций с авторами.</p>
+        <p class="text-block-2">Хоть сама лампа не имеет физической реализации, но в этой галлерее вы можете использовать ее как холст для вышего высказывания на тему отдыха и показа своего творчества в формате стикеров.</p>
+
+        <div class="toggle">
+            <span>[Соло]</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle">
+                <span class="slider"></span>
+            </label>
+            <span>[Команда]</span>
+        </div>
+
+        <div class="arrow arrow-back" id="prev">
+            <a href="https://example.com"><span class="arrow-button"></span></a>
+        </div>
+        <div class="arrow arrow-forward" id="next">
+            <a href="https://example.com"><span class="arrow-button"></span></a>
+        </div>
+
+        <div class="counter">1-23</div>
+        <div class="author">[<a href="https://example.com"><span>автор</span><span class="material-symbols-outlined">arrow_outward</span></a>]</div>
+        <p class="text">отдых значем. отдых важен. отдыхайте. лежите. не перерабатывайте. попейте кокиколу. посмотрите на закат. почитайте книжку. в конце концов выспитесь. живи. кайфуй. жизнь одна.</p>
+    </main>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

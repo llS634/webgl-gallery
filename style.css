@@ -1,0 +1,330 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  color: #131313;
+  text-transform: lowercase;
+  line-height: 120%;
+  letter-spacing: -4%;
+}
+
+p {
+  text-transform: uppercase;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1 {
+  font-size: 40px;
+  letter-spacing: -2%;
+  line-height: 115%;
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -1%;
+  line-height: 120%;
+  color: #131313;
+  background: #D0D0CF;
+}
+
+html {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #FFFFFF;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }
+* { scrollbar-width: none; }
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/*3D Model------------------------------------------------------------------------------------*/
+#three-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/*Tooltip------------------------------------------------------------------------------------*/
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: fixed;
+  top: var(--mouse-y, 0);
+  left: var(--mouse-x, 0);
+  transform: translate(12px, 12px);
+  background: #FFFFFF;
+  color: #131313;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -2%;
+  padding: 4px;
+  border: 2px solid black;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*Header------------------------------------------------------------------------------------*/
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 50px repeat(8, 1fr) 50px;
+  grid-template-rows: 50px repeat(5, 1fr) 50px;
+  pointer-events: none;
+}
+
+.nav > * {
+  pointer-events: auto;
+}
+
+.nav-icon {
+  display: block;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.10s step-end;
+}
+
+.nav-icon:hover {
+  transition: none;
+}
+
+.icon-info {
+  grid-column: 5 / 5;
+  grid-row: 2 / 2;
+  background-image: url("assets/icon/info.svg");
+}
+
+.icon-info:hover {
+  background-image: url("assets/icon/info-hover.svg");
+}
+
+.icon-contact {
+  grid-column: 9 / 9;
+  grid-row: 3 / 3;
+  background-image: url("assets/icon/contact.svg");
+  background-position: center;
+}
+
+.icon-contact:hover {
+  background-image: url("assets/icon/contact-hover.svg");
+}
+
+.nav-button {
+  grid-column: 9 / 9;
+  grid-row: 6 / 6;
+  align-self: end;
+  height: 46px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #131313;
+  background: none;
+  border: 4px solid #131313;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+  text-transform: uppercase;
+}
+
+/*Body Grid------------------------------------------------------------------------------------*/
+.overlay-ui {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 50px repeat(8, 1fr) 50px;
+  grid-template-rows: 50px repeat(5, 1fr) 50px;
+  pointer-events: none;
+}
+
+.overlay-ui > * {
+  pointer-events: auto;
+}
+
+/*Info Block------------------------------------------------------------------------------------*/
+.heading {
+  grid-column: 2 / 5;
+  grid-row: 2 / 2;
+}
+
+.text-block-1 {
+  grid-column: 2 / 5;
+  grid-row: 2 / 2;
+  align-self: end;
+}
+
+.text-block-2 {
+  grid-column: 2 / 5;
+  grid-row: 3 / 3;
+}
+
+/*Switcher------------------------------------------------------------------------------------*/
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  grid-column: 8 / 8;
+  grid-row: 2 / 2;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: lowercase;
+  letter-spacing: -4%;
+  color: #131313;
+  user-select: none;
+}
+
+.switch {
+  position: relative;
+  width: 46px;
+  height: 85px;
+  background: none;
+  border-radius: 30px;
+  border: 4px solid #131313;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider { 
+  position: absolute;
+  border-radius: 30px;
+  transition: 0.2s;
+  top: 4px;
+  left: 4px;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 4px solid #131313;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .slider:before {
+  transform: translateY(39px);
+}
+
+.arrow-back {
+  grid-column: 2 / 2;
+  grid-row: 4 / 4;
+  place-self: center start;
+}
+
+.arrow-forward {
+  grid-column: 9 / 9;
+  grid-row: 4 / 4;
+  place-self: center end;
+}
+
+.arrow a span.arrow-button {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#prev a span.arrow-button {
+  background-image: url("assets/icon/arrow-back.svg");
+}
+
+#next a span.arrow-button {
+  background-image: url("assets/icon/arrow-forward.svg");
+}
+
+.counter {
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  grid-column: 2 / 2;
+  grid-row: 5 / 5;
+  place-self: end end;
+  line-height: 0.8;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.author {
+  grid-column: 3 / 3;
+  grid-row: 5 / 5;
+  font-size: 16px;
+  place-self: end start;
+}
+
+.text {
+  grid-column: 3 / 5;
+  grid-row: 6 / 6;
+  place-self: end start;
+}
