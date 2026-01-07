@@ -14,11 +14,11 @@ const gltfCache = new Map();
 
 const galleryData = {
     solo: [
-        { file: "assets/solo/solo-1.glb", author: "Иван Иванов", link: "https://", desc: "Отдых значем. Отдых важен. Отдыхайте. Лежите. Не перерабатывайте. Попейте кокиколу. Посмотрите на закат. Почитайте книжку. В конце концов выспитесь. Живи. Кайфуй. Жизнь одна." },
-        { file: "assets/solo/solo-2.glb", author: "Марья Марьевна", link: "https://", desc: "Пупупу тут очень осмысленный текст о чем-то важном и нужном много текста много букв и все имеет смысл смысл все имеет" }
+        { file: "assets/solo/solo-model(elizaveta-sashenkova).glb", author: "Автор Галлереи", link: "https://", desc: "Отдых значем. Отдых важен. Отдыхайте. Лежите. Не перерабатывайте. Попейте кокиколу. Посмотрите на закат. Почитайте книжку. В конце концов выспитесь. Живи. Кайфуй. Жизнь одна." },
+        { file: "assets/solo/solo-model(yellow).glb", author: "...", link: "https://", desc: "Тут может быть текст к твоей экспозиции стикеров" }
     ],
     team: [
-        { file: "assets/team/team-1.glb", authors: ["Команда"], links: ["https://"], desc: "Я в своем познании настолько преисполнился, что я как будто бы уже сто триллионов миллиардов лет проживаю на триллионах и триллионах таких же планет, как эта Земля..." }
+        { file: "assets/team/team-model(red).glb", authors: ["..."], links: ["https://"], desc: "Тут может быть текст к вашей экспозиции стикеров" }
     ]
 };
 
@@ -41,7 +41,6 @@ function init() {
     renderer.toneMappingExposure = 1;
 
     document.getElementById('three-container').appendChild(renderer.domElement);
-
 
     const environment = new RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -127,6 +126,16 @@ async function loadFullLamp() {
     const data = galleryData[currentMode];
     const item = data[currentIndex];
 
+    document.getElementById('counter').textContent = `${currentIndex + 1}-${data.length}`;
+    document.getElementById('author-name').textContent =
+        currentMode === 'solo' ? item.author : item.authors.join(', ');
+    document.getElementById('author-link').href =
+        currentMode === 'solo' ? item.link : (item.links?.[0] || '#');
+    document.getElementById('text-author').textContent = item.desc;
+
+    const hint = document.getElementById('loading');
+    hint.classList.add('visible');
+
     if (currentModel) {
         disposeModel(currentModel);
         modelHolder.remove(currentModel);
@@ -145,14 +154,7 @@ async function loadFullLamp() {
         modelHolder.add(model);
     }
 
-    document.getElementById('counter').textContent = `${currentIndex + 1}-${data.length}`;
-    document.getElementById('author-name').textContent =
-        currentMode === 'solo' ? item.author : item.authors.join(', ');
-
-    document.getElementById('author-link').href =
-        currentMode === 'solo' ? item.link : (item.links?.[0] || '#');
-
-    document.getElementById('text-author').textContent = item.desc;
+    hint.classList.remove('visible');
 }
 
 function animate() {
