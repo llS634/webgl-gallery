@@ -30,50 +30,57 @@
 <body>
     <div id="three-container">
         <div id="loading" class="hidden">
-            <img src="assets/icon/loading.svg" alt="Загрузка...">
+            <img src="assets/icon/loading.svg" alt="">
         </div>
     </div>
 
     <header>
         <div class="menu">
-            <button class="burger-menu" id="burgerMenu" title="Burger menu">
-                <img src="assets/icon/burger-menu.svg" alt="Иконка меню">
+            <button class="burger-menu" id="burgerMenu">
+                <img src="assets/icon/burger-menu.svg" alt="">
             </button>
         </div>
 
         <nav class="nav">
-            <a class="icon-info" href="#" data-tooltip="Подробности проекта">
-                <img class="icon-interactive" src="assets/icon/info.svg" data-hover="assets/icon/info-hover.svg" alt="Иконка информация">
+            <a class="icon-info" href="#" data-tooltip="">
+                <img class="icon-interactive" src="assets/icon/info.svg" data-hover="assets/icon/info-hover.svg" alt="">
             </a>
 
-            <a class="icon-contact" href="#" data-tooltip="Контакты">
-                <img class="icon-interactive" src="assets/icon/contact.svg" data-hover="assets/icon/contact-hover.svg" alt="Иконка контакты">
+            <a class="icon-contact" href="#" data-tooltip="">
+                <img class="icon-interactive" src="assets/icon/contact.svg" data-hover="assets/icon/contact-hover.svg" alt="">
             </a>
 
-            <button class="nav-button" data-tooltip="Подать заявку">Exhibit</button>
+            <button class="nav-button" data-tooltip="">Exhibit</button>
         </nav>
+
+        <div class="paging">
+            <div class="arrow arrow-back" id="prev">
+                <a href="https://example.com"><span class="arrow-button"></span></a>
+            </div>
+
+            <div class="arrow arrow-forward" id="next">
+                <a href="https://example.com"><span class="arrow-button"></span></a>
+            </div>
+        </div>
     </header>
 
     <main class="overlay-ui">
         <div class="text-block-1">
-        <img class="logo" src="assets/icon/logo.svg" alt="Иконка контакты">
-        <p class="text-heading">Стикер галлерея проекта артовой лампы светотерапии [<a href="https://example.com"><span class="material-symbols-outlined">arrow_outward</span></a>]. В концепции бренда заложена идея коллабораций с авторами.</p>
+            <img class="logo" src="assets/icon/logo.svg" alt="">
+
+            <div class="heading">
+            <p class="text-heading"></p>
+            [<a href="https://example.com" class="project-link"><span class="material-symbols-outlined">arrow_outward</span></a>]
+            </div>
         </div>
 
         <div class="toggle">
-            <span>[Соло]</span>
+            <span class="solo"></span>
             <label class="switch">
                 <input type="checkbox" id="mode-toggle">
                 <span class="slider"></span>
             </label>
-            <span>[Команда]</span>
-        </div>
-
-        <div class="arrow arrow-back" id="prev">
-            <a href="https://example.com"><span class="arrow-button"></span></a>
-        </div>
-        <div class="arrow arrow-forward" id="next">
-            <a href="https://example.com"><span class="arrow-button"></span></a>
+            <span class="team"></span>
         </div>
 
         <div class="counter" id="counter"></div>

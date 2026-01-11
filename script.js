@@ -9,25 +9,63 @@ let gltfLoader;
 
 const modelHolder = new THREE.Group();
 let currentModel = null;
-
 const gltfCache = new Map();
+
+let texts = {};
+
+function getUserLanguage() {
+    const lang = navigator.language || navigator.userLanguage;
+    return lang.startsWith('ru') ? 'ru' : 'en';
+}
+
+async function loadLanguage() {
+    const lang = getUserLanguage();
+    document.documentElement.lang = lang;
+
+    try {
+        const response = await fetch(`./lang/${lang}.json`);
+        texts = await response.json();
+    } catch {
+        const response = await fetch('./lang/en.json');
+        texts = await response.json();
+        document.documentElement.lang = 'en';
+    }
+}
 
 const galleryData = {
     solo: [
-        { file: "assets/solo/solo-model(elizaveta-sashenkova).glb", author: "Автор Галлереи", link: "https://", desc: "Отдых значем. Отдых важен. Отдыхайте. Лежите. Не перерабатывайте. Попейте кокиколу. Посмотрите на закат. Почитайте книжку. В конце концов выспитесь. Живи. Кайфуй. Жизнь одна." },
-        { file: "assets/solo/solo-model(yellow).glb", author: "...", link: "https://", desc: "Тут может быть текст к твоей экспозиции стикеров" }
+        {
+            file: "assets/solo/solo-model(elizaveta-sashenkova).glb",
+            authorKey: "solo_1_author",
+            link: "https://",
+            descKey: "solo_1_desc"
+        },
+        {
+            file: "assets/solo/solo-model(yellow).glb",
+            authorKey: "solo_1_author",
+            link: "https://",
+            descKey: "solo_2_desc"
+        }
     ],
     team: [
-        { file: "assets/team/team-model(red).glb", authors: ["..."], links: ["https://"], desc: "Тут может быть текст к вашей экспозиции стикеров" }
+        {
+            file: "assets/team/team-model(red).glb",
+            authorKey: "solo_1_author",
+            links: ["https://"],
+            descKey: "solo_3_desc"
+        }
     ]
 };
 
 let currentMode = 'solo';
 let currentIndex = 0;
+let isAuthorsOpen = false;
 
 init();
 
-function init() {
+async function init() {
+    await loadLanguage();
+
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(2.7, 1.7, 3.1);
 
@@ -57,7 +95,6 @@ function init() {
     controls.maxDistance = 10;
     controls.target.set(0, 1.0, 0);
     controls.maxPolarAngle = Math.PI * 0.55;
-
     controls.enableZoom = true;
     controls.zoomSpeed = 2.0;
     controls.zoomDampingFactor = 0.15;
@@ -106,10 +143,12 @@ async function loadGLTF(url) {
 
 function setupUI() {
     const modeToggle = document.getElementById('mode-toggle');
+
     modeToggle.addEventListener('change', () => {
         currentMode = modeToggle.checked ? 'team' : 'solo';
         currentIndex = 0;
         loadFullLamp();
+        if (isAuthorsOpen) closeAuthorsList();
     });
 
     document.getElementById('prev').addEventListener('click', e => {
@@ -125,6 +164,48 @@ function setupUI() {
         currentIndex = (currentIndex + 1) % arr.length;
         loadFullLamp();
     });
+
+    document.querySelectorAll('.icon-interactive[data-hover]').forEach(img => {
+        const original = img.src;
+        const hoverSrc = img.dataset.hover;
+        img.addEventListener('mouseenter', () => img.src = hoverSrc);
+        img.addEventListener('mouseleave', () => img.src = original);
+    });
+}
+
+const textElements = [
+    { selector: '.text-heading', key: 'text-heading' },
+    { selector: '.solo', key: 'solo' },
+    { selector: '.team', key: 'team' },
+    { selector: '#author-name', keyPrefix: 'authorKey' },
+    { selector: '#text-author', keyPrefix: 'descKey' }
+];
+
+function updateUITexts(currentGalleryItem = null) {
+    textElements.forEach(item => {
+        const el = document.querySelector(item.selector);
+        if (!el) return;
+
+        if (item.key) {
+            el.textContent = texts[item.key] || el.textContent;
+        }
+
+        if (item.keyPrefix && currentGalleryItem) {
+            const jsonKey = currentGalleryItem[item.keyPrefix];
+            el.textContent = texts[jsonKey] || el.textContent;
+        }
+    });
+
+    document.querySelectorAll('.nav [data-tooltip], .menu, .loading, .logo').forEach(el => {
+        const img = el.querySelector('img');
+        const keyBase = el.className.replace(/-/g, "_");
+
+        if (img) {
+            img.alt = texts[`${keyBase}_alt`] || img.alt;
+        }
+
+        el.dataset.tooltip = texts[keyBase] || el.dataset.tooltip;
+    });
 }
 
 async function loadFullLamp() {
@@ -132,11 +213,9 @@ async function loadFullLamp() {
     const item = data[currentIndex];
 
     document.getElementById('counter').textContent = `${currentIndex + 1}-${data.length}`;
-    document.getElementById('author-name').textContent =
-        currentMode === 'solo' ? item.author : item.authors.join(', ');
-    document.getElementById('author-link').href =
-        currentMode === 'solo' ? item.link : (item.links?.[0] || '#');
-    document.getElementById('text-author').textContent = item.desc;
+    document.getElementById('author-link').href = item.link || item.links?.[0] || '#';
+
+    updateUITexts(item);
 
     const hint = document.getElementById('loading');
     hint.classList.add('visible');
