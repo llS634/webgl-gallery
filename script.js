@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import customCursorManager from './cursor.js';
 
 let camera, scene, renderer, controls;
 let gltfLoader;
@@ -198,13 +199,15 @@ function updateUITexts(currentGalleryItem = null) {
 
     document.querySelectorAll('.nav [data-tooltip], .menu, .loading, .logo').forEach(el => {
         const img = el.querySelector('img');
-        const keyBase = el.className.replace(/-/g, "_");
+        const className = el.className.trim();
+        const keyBaseUnderscore = className.replace(/-/g, "_");
+        const keyBaseOriginal = className;
 
         if (img) {
-            img.alt = texts[`${keyBase}_alt`] || img.alt;
+            img.alt = texts[`${keyBaseUnderscore}_alt`] || texts[`${keyBaseOriginal}_alt`] || img.alt;
         }
 
-        el.dataset.tooltip = texts[keyBase] || el.dataset.tooltip;
+        el.dataset.tooltip = texts[keyBaseUnderscore] || texts[keyBaseOriginal] || el.dataset.tooltip;
     });
 }
 
@@ -267,3 +270,103 @@ document.querySelectorAll('.icon-interactive[data-hover]').forEach(img => {
     img.addEventListener('mouseenter', () => img.src = hoverSrc);
     img.addEventListener('mouseleave', () => img.src = original);
 });
+
+/* Exhibit Modal ------------------------------------------------------------------------------*/
+const exhibitModal = document.getElementById('exhibit-modal');
+const exhibitDialog = exhibitModal?.querySelector('.modal__dialog');
+const exhibitTrigger = document.querySelector('.nav-button');
+const exhibitForm = document.getElementById('exhibit-form');
+const formStatus = document.getElementById('form-status');
+const submitButton = document.getElementById('exhibit-submit');
+const requiredFields = exhibitForm ? Array.from(exhibitForm.querySelectorAll('input[required], textarea[required]')) : [];
+
+const openModal = () => {
+    if (!exhibitModal) return;
+    exhibitModal.classList.add('is-open');
+    exhibitModal.setAttribute('aria-hidden', 'false');
+};
+
+const closeModal = () => {
+    if (!exhibitModal) return;
+    exhibitModal.classList.remove('is-open');
+    exhibitModal.setAttribute('aria-hidden', 'true');
+    if (formStatus) {
+        formStatus.textContent = '';
+        formStatus.className = 'form-status';
+    }
+};
+
+if (exhibitTrigger && exhibitModal) {
+    exhibitTrigger.addEventListener('click', () => openModal());
+}
+
+if (exhibitModal && exhibitDialog) {
+    exhibitModal.addEventListener('click', evt => {
+        if (evt.target === exhibitModal) {
+            closeModal();
+        }
+    });
+}
+
+document.addEventListener('keydown', evt => {
+    if (evt.key === 'Escape' && exhibitModal?.classList.contains('is-open')) {
+        closeModal();
+    }
+});
+
+const validateField = field => {
+    const isValid = field.value.trim() !== '';
+    field.classList.toggle('field-error', !isValid);
+    return isValid;
+};
+
+requiredFields.forEach(field => {
+    field.addEventListener('input', () => {
+        if (field.classList.contains('field-error')) {
+            validateField(field);
+        }
+    });
+});
+
+if (exhibitForm) {
+    exhibitForm.addEventListener('submit', async evt => {
+        evt.preventDefault();
+        formStatus.textContent = '';
+        formStatus.className = 'form-status';
+
+        const allValid = requiredFields.every(validateField);
+        if (!allValid) {
+            formStatus.textContent = 'Заполните все обязательные поля.';
+            formStatus.classList.add('error');
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'Отправка...';
+
+        const formData = new FormData(exhibitForm);
+
+        try {
+            const response = await fetch(exhibitForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                formStatus.textContent = 'Готово! Мы скоро свяжемся.';
+                formStatus.classList.add('success');
+                exhibitForm.reset();
+            } else {
+                formStatus.textContent = 'Не удалось отправить. Попробуйте позже.';
+                formStatus.classList.add('error');
+            }
+        } catch (error) {
+            formStatus.textContent = 'Произошла ошибка сети.';
+            formStatus.classList.add('error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Отправить';
+        }
+    });
+}

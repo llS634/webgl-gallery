@@ -235,49 +235,59 @@ body {
   pointer-events: auto;
 }
 
-
-
-
+/*Exhibition------------------------------------------------------------------------------------*/
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.28s ease;
 }
 
-.modal:not(.hidden) {
+.modal.is-open {
   opacity: 1;
   pointer-events: all;
 }
 
-.modal-content {
+.modal__dialog {
+  width: min(560px, 100%);
   background: #D0D0CF;
   border: 3.5px solid #131313;
-  border-radius: 28px;
-  width: 420px;
-  padding: 28px 26px 24px;
+  border-radius: 30px;
+  padding: 20px;
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.28s ease;
   color: #131313;
   font-family: 'TT Norms Pro Mono', sans-serif;
+}
+
+.modal.is-open .modal__dialog {
+  transform: translateY(0) scale(1);
+}
+
+.exhibit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .form-field {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 14px;
 }
 
 .field-label {
   width: 110px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
+  text-transform: lowercase;
+  line-height: 120%;
+  letter-spacing: -0.04em;
+  font-weight: 400;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -285,27 +295,28 @@ body {
 .form-field input,
 .form-field textarea {
   flex: 1;
-  height: 42px;
+  height: 40px;
   background: #D0D0CF;
   border: 3.5px solid #131313;
-  border-radius: 999px; /* капсула */
-  padding: 0 16px;
+  border-radius: 16px;
+  padding: 0 14px;
   font-size: 14px;
   color: #131313;
-  font-family: inherit;
+  font-family: 'TT Norms Pro Mono', sans-serif;
   resize: none;
 }
 
 .form-field textarea {
   height: 78px;
-  padding: 12px 16px;
-  border-radius: 22px;
+  padding: 12px 14px;
+  border-radius: 20px;
   line-height: 1.3;
 }
 
 .form-field input::placeholder,
 .form-field textarea::placeholder {
-  opacity: 0.4;
+  opacity: 0.5;
+  color: #131313;
 }
 
 .form-field input:focus,
@@ -313,31 +324,51 @@ body {
   outline: none;
 }
 
-.button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 18px;
-}
-
-.modal-content button {
-  min-width: 150px;
-  height: 42px;
-  padding: 0 28px;
-  background: #D0D0CF;
-  border: 3.5px solid #131313;
-  border-radius: 999px;
-  color: #131313;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.modal-content button:hover {
+.form-field .field-error {
   background: #131313;
   color: #D0D0CF;
+}
+
+.form-field .field-error::placeholder {
+  color: rgba(208, 208, 207, 0.7);
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal__button {
+  height: 46px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #131313;
+  background: none;
+  border: 3.5px solid #131313;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.form-status {
+  margin-top: 6px;
+  font-size: 14px;
+  text-transform: lowercase;
+  line-height: 120%;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+.form-status.success {
+  color: #131313;
+}
+
+.form-status.error {
+  color: #131313;
 }
 
 /*Main------------------------------------------------------------------------------------*/
@@ -595,6 +626,26 @@ input:checked + .slider:before {
   .text-author {
     place-self: end start;
     grid-row: 8 / 8;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal__dialog {
+    border-radius: 20px;
+  }
+
+  .form-field {
+    align-items: flex-start;
+  }
+
+  .field-label {
+    width: 96px;
+    line-height: 1.2;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
   }
 }
 

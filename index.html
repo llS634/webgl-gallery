@@ -90,6 +90,43 @@
         <p class="text-author" id="text-author"></p>
     </main>
 
+    <div class="modal" id="exhibit-modal" aria-hidden="true">
+        <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="exhibit-title">
+            <form id="exhibit-form" class="exhibit-form" action="https://formspree.io/f/xnjjdlwz/" method="POST" novalidate>
+                <div class="form-field">
+                    <span class="field-label" id="exhibit-title">[Имя]</span>
+                    <input type="text" name="name" placeholder="ВАШЕ / КОМАНДЫ" required autocomplete="name">
+                </div>
+
+                <div class="form-field">
+                    <span class="field-label">[Cтикеры]</span>
+                    <input type="url" name="stickers" placeholder="ССЫЛКА FIGMA" required inputmode="url">
+                </div>
+
+                <div class="form-field">
+                    <span class="field-label">[Описание]</span>
+                    <textarea name="description" placeholder="ТЕКСТ ДЛЯ СТИКЕРОВ" required></textarea>
+                </div>
+
+                <div class="form-field">
+                    <span class="field-label">[Контакты]</span>
+                    <input type="text" name="contacts" placeholder="СВЯЗЬ С ВАМИ" required autocomplete="tel">
+                </div>
+
+                <div class="form-field">
+                    <span class="field-label">[Соцсети]</span>
+                    <input type="text" name="social" placeholder="ДЛЯ ОПИСАНИЯ" required autocomplete="url">
+                </div>
+
+                <div class="form-status" id="form-status" aria-live="polite"></div>
+
+                <div class="modal__actions">
+                    <button type="submit" class="modal__button" id="exhibit-submit">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <script type="importmap">
 {
     "imports": {
