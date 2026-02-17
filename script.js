@@ -127,6 +127,8 @@ async function init() {
     controls.zoomSpeed = 2.0;
     controls.zoomDampingFactor = 0.15;
 
+    updateCameraPosition();
+
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
     gltfLoader = new GLTFLoader();
@@ -439,11 +441,21 @@ function animate() {
     if (renderer && scene && camera) renderer.render(scene, camera);
 }
 
+function updateCameraPosition() {
+    if (!camera) return;
+    if (window.innerWidth < 690) {
+        camera.position.set(2.7, 1.7, 4.0);
+    } else {
+        camera.position.set(2.7, 1.7, 3.1);
+    }
+}
+
 function onWindowResize() {
     if (!camera || !renderer) return;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateCameraPosition();
 }
 
 window.addEventListener('pageshow', (event) => {
